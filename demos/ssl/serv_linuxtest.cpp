@@ -28,8 +28,10 @@
 /* define HOME to be dir for key and cert files... */
 #define HOME "./"
 /* Make these what you want for cert & key files */
-#define CERTF  HOME "testkey.cer"
-#define KEYF  HOME  "testkey.key"
+//#define CERTF  HOME "testkey.cer"
+//#define KEYF  HOME  "testkey.key"
+#define CERTF  HOME "cacert.pem"
+#define KEYF  HOME  "cakey.pem"
 
 
 #define CHK_NULL(x) if ((x)==NULL) exit (1)
@@ -75,7 +77,7 @@ int main ()
     fprintf(stderr,"Private key does not match the certificate public key\n");
     exit(5);
   }
-  SSL_CTX_set_cipher_list(ctx, GM1_TXT_RSA_SM4_SM3);
+  //SSL_CTX_set_cipher_list(ctx, GM1_TXT_RSA_SM4_SM3);
   /* ----------------------------------------------- */
   /* Prepare TCP socket for receiving connections */
 
