@@ -1,0 +1,62 @@
+#shell cmd define
+CP = cp
+RM = rm -f
+MKDIR = mkdir -p
+
+#compile cmd define
+C_C = gcc
+C_CPP = g++
+
+#VPATH define
+VPATH = 
+
+
+OPENSSL_PATH=../../
+
+#dir define
+INCLUDE_DIRS = -I$(OPENSSL_PATH)include
+OBJS_DIR = objs
+LIB = -ldl $(OPENSSL_PATH)libssl.a $(OPENSSL_PATH)libcrypto.a 
+#compile option define
+C_FLAGES = -O2 -g -Wno-deprecated -fpermissive
+CPP_FLAGES = -O2 -Wno-deprecated -g -fpermissive
+
+#target
+TARGET1 = serv
+
+#source files
+C_FILES = 
+
+CPP_FILES = serv_linuxtest.cpp 
+
+
+#.c -> .o
+C_OBJS = $(patsubst %.c,%.o,$(C_FILES))
+CPP_OBJS = $(patsubst %.cpp,%.o,$(CPP_FILES))
+
+#all
+all:$(OBJS_DIR) $(TARGET1)
+
+#mk obj dir
+$(OBJS_DIR):
+	$(MKDIR) ./$@
+
+#.o -> target
+$(TARGET1):$(CPP_OBJS) $(C_OBJS)
+	$(C_CPP) -o $@ $^ $(CPP_FLAGES) $(INCLUDE_DIRS) $(LIB)
+
+#.c -> .o
+$(C_OBJS):%.o:%.c
+	$(C_C) -c $< $(C_FLAGES) $(INCLUDE_DIRS) -o $@
+
+#.cpp -> .o
+$(CPP_OBJS):%.o:%.cpp
+	$(C_CPP) -c $< $(CPP_FLAGES) $(INCLUDE_DIRS) -o $@
+
+#clean
+clean:
+	$(RM) $(TARGET1) $(CPP_OBJS) $(OBJS_DIR)/*
+
+#end
+
+

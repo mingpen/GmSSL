@@ -215,10 +215,16 @@ static const EVP_MD *ssl_digest_methods[SSL_MD_NUM_IDX] = {
 static int ssl_mac_pkey_id[SSL_MD_NUM_IDX] = {
     EVP_PKEY_HMAC, EVP_PKEY_HMAC, EVP_PKEY_HMAC, NID_undef,
     EVP_PKEY_HMAC, EVP_PKEY_HMAC
+#ifndef OPENSSL_NO_GMSSL
+, EVP_PKEY_HMAC
+#endif
 };
 
 static int ssl_mac_secret_size[SSL_MD_NUM_IDX] = {
     0, 0, 0, 0, 0, 0
+#ifndef OPENSSL_NO_GMSSL
+	,0
+#endif
 };
 
 static int ssl_handshake_digest_flag[SSL_MD_NUM_IDX] = {
@@ -479,6 +485,9 @@ void ssl_load_ciphers(void)
 #ifndef OPENSSL_NO_GMSSL
 	ssl_cipher_methods[SSL_ENC_SM4_IDX] = EVP_get_cipherbyname(SN_sms4_cbc);
 	ssl_digest_methods[SSL_MD_SM3_IDX] = EVP_get_digestbyname(SN_sm3);
+	ssl_mac_secret_size[SSL_MD_SM3_IDX] =
+		EVP_MD_size(ssl_digest_methods[SSL_MD_SM3_IDX]);
+
 #endif
 
 }
@@ -855,6 +864,11 @@ static void ssl_cipher_get_disabled(unsigned long *mkey, unsigned long *auth,
 
 #ifndef OPENSSL_NO_GMSSL
 	/* what we should do? */
+	*enc |=
+		(ssl_cipher_methods[SSL_ENC_SM4_IDX] ==
+		NULL) ? SSL_SM4 : 0;
+	*mac |= (ssl_digest_methods[SSL_MD_SM3_IDX] == NULL) ? SSL_SM3 : 0;
+
 #endif
 }
 

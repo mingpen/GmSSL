@@ -166,6 +166,10 @@
 # include <openssl/safestack.h>
 # include <openssl/symhacks.h>
 
+#ifndef OPENSSL_NO_GMSSL
+#include <openssl/gmssl.h>
+#endif
+
 #ifdef  __cplusplus
 extern "C" {
 #endif
