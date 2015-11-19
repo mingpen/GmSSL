@@ -75,7 +75,7 @@ int main ()
     fprintf(stderr,"Private key does not match the certificate public key\n");
     exit(5);
   }
-  SSL_CTX_set_cipher_list(ctx, "RC4-MD5");
+  SSL_CTX_set_cipher_list(ctx, GM1_TXT_RSA_SM4_SM3);
   /* ----------------------------------------------- */
   /* Prepare TCP socket for receiving connections */
 
