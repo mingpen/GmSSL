@@ -2892,6 +2892,21 @@ OPENSSL_GLOBAL SSL_CIPHER ssl3_ciphers[] = {
 #endif
 
 #ifndef OPENSSL_NO_GMSSL
+	 /* Cipher 7 */
+	 {
+		 1,
+			 GM1_TXT_ECDHE_SM4_SM3,
+			 GM1_CK_ECDHE_SM4_SM3,
+			 SSL_kECDHe,	/* ephemeral ECDH key exchange algorithm bits */
+			 SSL_aECDH,	/* auth algor bits */
+			 SSL_SM4,	/* symmetric encryption */
+			 SSL_SM3,	/* symmetric authentication */
+			 SSL_TLSV1,
+			 SSL_NOT_EXP | SSL_HIGH,
+			 SSL_HANDSHAKE_MAC_SM3 | GM1_PRF_SM3, /* extra flags */
+			 256, /* number of bits really used */
+			 256, /* number of bits for algorithm */
+	 },
 	 /*RSA-gm Cipher 11 */
 	 {
 		 1,
