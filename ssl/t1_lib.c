@@ -253,7 +253,8 @@ static int nid_list[] = {
     NID_secp521r1,              /* secp521r1 (25) */
     NID_brainpoolP256r1,        /* brainpoolP256r1 (26) */
     NID_brainpoolP384r1,        /* brainpoolP384r1 (27) */
-    NID_brainpoolP512r1         /* brainpool512r1 (28) */
+    NID_brainpoolP512r1,         /* brainpool512r1 (28) */
+	NID_sm2p256v1/*sm2 29*/
 };
 
 static const unsigned char ecformats_default[] = {
@@ -282,6 +283,9 @@ static const unsigned char eccurves_auto[] = {
     0, 9,                       /* sect283k1 (9) */
     0, 10,                      /* sect283r1 (10) */
 # endif
+#ifndef OPENSSL_NO_GMSSL
+	0, 29,
+#endif
 };
 
 static const unsigned char eccurves_all[] = {
@@ -323,6 +327,9 @@ static const unsigned char eccurves_all[] = {
     0, 1,                       /* sect163k1 (1) */
     0, 2,                       /* sect163r1 (2) */
     0, 3,                       /* sect163r2 (3) */
+# endif
+# ifndef OPENSSL_NO_GMSSL
+	0, 29,	/*SM2 29*/
 # endif
 };
 
@@ -443,6 +450,8 @@ int tls1_ec_nid2curve_id(int nid)
         return 27;
     case NID_brainpoolP512r1:  /* brainpool512r1 (28) */
         return 28;
+	case NID_sm2p256v1:/*sm2*/
+		return 29;
     default:
         return 0;
     }
